@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Submission and Retrieval</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #AFE1AF;
+            margin: 0;
+            padding: 0;
+            
+        }
+
+        h1, h2 {
+            color: #343a40;
+        }       
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-section {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-section h2 {
+            margin-top: 0;
+        }
+
+        .input-field {
+            margin-bottom: 10px;
+        }
+
+        .input-field label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        .input-field input[type="text"],
+        .input-field input[type="password"],
+        .input-field textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .input-field textarea {
+            height: 100px;
+        }   
+
+        .input-field button[type="submit"],
+        .button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .input-field button[type="submit"]:hover,
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+                   
+
+        .button-container form {
+            display: inline-block;
+            margin-right: 10px; /* Adjust spacing between forms */
+        }
+        .parent-div{
+            width: 100%;
+            background-color: #AFE1AF;
+            padding: 20px;
+        }
+        .centered-div {
+            max-width: 500px; /* Adjust the maximum width as needed */
+            margin: 0 auto; /* Center horizontally */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .centered-form {
+            max-width: 700px; /* Adjust the maximum width as needed */
+            margin: 0 auto; /* Center horizontally */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            text-align: center;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .banner {
+            text-align: center;
+            padding: 20px 0;
+            background-color: green;
+        }
+        .banner img {
+            max-width: 100%;
+            height: auto;
+        }
+        .entry_form {
+            background-color: #90EE90;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .searchResults
+        {
+            padding-left: 20px;
+            color: black;
+        }
+        .movie-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .movie-table th, .movie-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .movie-table th {
+            background-color: #f2f2f2;
+        }
+
+        .movie-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .movie-table tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        .movie-table th:first-child, .movie-table td:first-child {
+            border-left: none;
+        }
+
+        .movie-table th:last-child, .movie-table td:last-child {
+            border-right: none;
+        }
+        .movie-table td:nth-child(2) {
+            width: 100px; /* Adjust as needed */
+        } 
+        .delete-table{
+            width: 100%;
+            text-align: center;
+        }
+        .delete-table th:nth-child(1),
+        .delete-table td:nth-child(1) {
+            width: 200px; /* Adjust the width as needed */
+        }
+
+        .delete-table th:nth-child(2),
+        .delete-table td:nth-child(2) {
+            width: 150px; /* Adjust the width as needed */
+        }
+
+        .delete-table th:nth-child(3),
+        .delete-table td:nth-child(3) {
+            width: 300px; /* Adjust the width as needed */
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <img src="ADBMS_project_logo.jpg" alt="Banner Image"style="width: 100px; height: auto;">
+    </div>
+    <h1 style="background-color:#AFE1AF;color: white;padding-left: 20px;">So, what do you think fan?</h1>
+
+    <div id="loginPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeLoginPopup()">&times;</span>
+            <h2>Login as Admin</h2>
+            <form id="loginForm" action="/login" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Form Section -->
+    <div class="entry_form centered-form">
+        
+        <form action="/" method="post">
+            Name: <br><input type="text" name="name"><br>
+            Movie:<br><input type="text" name="movie"><br>
+            Fan POV: Tell us your story?<br><textarea name="story" rows="20" cols="95"></textarea><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <br>
+    
+    <div class="parent-div">
+        <div class="button-container centered-div">
+            <h2>Movie Search</h1>
+            <form action="/search" method="POST">
+                <label for="query">Search Movie:</label>
+                <input type="text" id="query" name="query" required>
+                <button type="submit" style="display: inline-block;">Search</button>
+            </form>
+            <form action="/refresh" method="POST">
+                <button type="submit" style="display: inline-block">View All</button>
+            </form>
+               
+            <button onclick="openPopup()" style="display: inline-block">Delete Entries</button>
+            
+        </div>
+    </div>
+    
+    <div class="searchResults">
+        <!--Search results will be displayed here -->
+        {% if data %}
+        <h2 style="color: white;">Search Results:</h2>
+        <table class="movie-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Movie</th>
+                    <th>Story</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.movie }}</td>
+                    <td>{{ item.story }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No results found.</p>
+        {% endif %}
+    </div>
+
+    
+
+    <!-- Popup -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Select Data to Delete</h2>
+            <form action="/delete" method="POST">
+                <table class="delete-table">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Name</th>
+                            <th>Movie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                        <tr>
+                            <td><input type="checkbox" name="document_id" value="{{ item._id }}"></td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.movie }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="submit">Delete Selected</button>
+            </form>
+        </div>
+    </div>
+<!--
+    <br>
+     -- Data Display Section 
+    {% if data %}
+    <h2>Retrieved Data</h2>
+    <ul>
+        {% for item in data %}
+            <li>Name: {{ item.name }}, Movie: {{ item.movie }}, Story: {{ item.story }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+-->
+
+    <script>
+        // Get the popup
+        var popup = document.getElementById("popup");
+
+        // Get the button that opens the popup
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the popup
+        var span = document.getElementsByClassName("close")[0];
+
+        // Open the popup
+        function openPopup() {
+            popup.style.display = "block";
+        }
+
+        // Close the popup when clicking on the close button
+        function closePopup() {
+            popup.style.display = "none";
+        }
+
+        // Close the popup when clicking outside of it
+        window.onclick = function(event) {
+          if (event.target == popup) {
+              popup.style.display = "none";
+        }
+        function openLoginPopup() {
+            document.getElementById("loginPopup").style.display = "block";
+        }
+
+        function closeLoginPopup() {
+            document.getElementById("loginPopup").style.display = "none";
+        }
+
+
+    }
+</script>
+</body>
+</html>
