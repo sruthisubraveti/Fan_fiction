@@ -12,3 +12,4 @@ The main purpose of this project is to develop a web platform for creating and s
 ![image](https://github.com/sruthisubraveti/Fan_fiction/assets/172334062/b986f420-7cef-475f-8705-0cb4fbb93295)
 
 ![image](https://github.com/sruthisubraveti/Fan_fiction/assets/172334062/12904d57-9084-44dd-a8df-5603c7f5d35d)
+
